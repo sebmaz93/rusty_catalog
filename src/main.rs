@@ -1,22 +1,7 @@
-enum Media {
-    Book { title: String, author: String },
-    Movie { title: String, director: String },
-    Audiobook { title: String },
-}
+mod content;
 
-impl Media {
-    fn description(&self) -> String {
-        if let Media::Book { title, author } = self {
-            format!("Book: {} by {}", title, author)
-        } else if let Media::Movie { title, director } = self {
-            format!("Movie: {} by {}", title, director)
-        } else if let Media::Audiobook { title } = self {
-            format!("Audiobook: {}", title)
-        } else {
-            String::from("media type not found.")
-        }
-    }
-}
+use content::catalog::Catalog;
+use content::media::Media;
 
 fn main() {
     let audiobook = Media::Audiobook {
@@ -32,4 +17,16 @@ fn main() {
         title: String::from("Not a book"),
         author: "random".to_owned(),
     };
+
+    let podcast1 = Media::Podcast(1);
+
+    let mut catalog = Catalog::new();
+    catalog.add(audiobook);
+    catalog.add(nice_movie);
+    catalog.add(just_a_book);
+    catalog.add(podcast1);
+
+    catalog.get_by_index(888);
+
+    println!("The Catalog, {:#?}", catalog.items.get(200))
 }
